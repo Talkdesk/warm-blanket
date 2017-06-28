@@ -1,7 +1,19 @@
 require 'warm_blanket/version'
+require 'warm_blanket/orchestrator'
 
 require 'dry-configurable'
 require 'logging'
+
+module WarmBlanket
+  def self.trigger_warmup(logger: WarmBlanket.config.logger, orchestrator_factory: Orchestrator)
+    unless [true, 'true', '1'].include?(WarmBlanket.config.enabled)
+      logger.info "WarmBlanket not enabled, ignoring trigger_warmup"
+      return false
+    end
+
+    orchestrator_factory.new.call
+  end
+end
 
 WarmBlanket.instance_eval do
   extend Dry::Configurable
