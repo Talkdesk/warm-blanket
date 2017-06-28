@@ -51,13 +51,23 @@ module WarmBlanket
     end
 
     def call
-      Thread.new do
+      safely_spawn_thread do
         logger.debug 'Started orchestrator thread'
         orchestrate
       end
     end
 
     private
+
+    def safely_spawn_thread(&block)
+      Thread.new do
+        begin
+          block.call
+        rescue => e
+          logger.error "Caught error that caused background thread to die #{e.class}: #{e.message}"
+        end
+      end
+    end
 
     def orchestrate
       if wait_for_port_to_open
@@ -72,7 +82,7 @@ module WarmBlanket
     def spawn_warmup_threads
       # Create remaining threads
       (warmup_threads - 1).times do
-        Thread.new do
+        safely_spawn_thread do
           perform_warmup_requests
         end
       end
