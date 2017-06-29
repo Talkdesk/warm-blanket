@@ -70,9 +70,9 @@ module WarmBlanket
     end
 
     def orchestrate
-      if wait_for_port_to_open
-        spawn_warmup_threads
-      end
+      success = wait_for_port_to_open
+
+      spawn_warmup_threads if success
     end
 
     def wait_for_port_to_open
