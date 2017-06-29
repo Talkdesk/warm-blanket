@@ -76,5 +76,35 @@ RSpec.describe WarmBlanket::Requester do
         expect(a_request(:get, "#{base_url}/1")).to have_been_made.times(2)
       end
     end
+
+    context 'when endpoints use the post verb' do
+      let(:endpoints) { [{post: '/foo', body: '{"hello":"world"}'}] }
+
+      let(:post_request_url) { "#{base_url}/foo" }
+
+      before do
+        stub_request(:post, post_request_url)
+      end
+
+      it 'performs a post request to the configured endpoints' do
+        call
+
+        expect(a_request(:post, post_request_url)).to have_been_made
+      end
+
+      it 'includes the specified body in the post request' do
+        call
+
+        expect(a_request(:post, post_request_url).with(body: '{"hello":"world"}')).to have_been_made
+      end
+    end
+
+    context 'when an unsupported http verb is used' do
+      let(:endpoints) { [{delete: '/foo'}] }
+
+      it do
+        expect { call }.to raise_error(described_class::InvalidHTTPVerb)
+      end
+    end
   end
 end

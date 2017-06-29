@@ -4,7 +4,12 @@ module WarmBlanket
   # Issues one request per call to the configured endpoint
   class Requester
 
+    InvalidHTTPVerb = Class.new(StandardError)
+
     private
+
+    SUPPORTED_VERBS = [:get, :post, :put].freeze
+    private_constant :SUPPORTED_VERBS
 
     attr_reader :base_url
     attr_reader :default_headers
@@ -30,12 +35,15 @@ module WarmBlanket
 
       endpoint = next_endpoint
 
-      logger.debug "Requesting #{endpoint.fetch(:get)}"
+      http_verb = extract_verb(endpoint)
 
-      response = connection.get do |request|
+      logger.debug "Requesting #{endpoint.fetch(http_verb)}"
+
+      response = connection.public_send(http_verb) do |request|
         apply_headers(request, default_headers)
         apply_headers(request, endpoint[:headers])
-        request.url(endpoint.fetch(:get))
+        request.url(endpoint.fetch(http_verb))
+        request.body = endpoint[:body] if endpoint[:body]
       end
 
       if response.status == 200
@@ -59,6 +67,14 @@ module WarmBlanket
       next_endpoint = endpoints[next_endpoint_position]
       self.next_endpoint_position = (next_endpoint_position + 1) % endpoints.size
       next_endpoint
+    end
+
+    def extract_verb(endpoint)
+      SUPPORTED_VERBS.each do |verb|
+        return verb if endpoint.key?(verb)
+      end
+
+      raise InvalidHTTPVerb, "Unsupported or missing HTTP verb for request: #{endpoint.inspect}"
     end
   end
 end

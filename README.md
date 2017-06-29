@@ -81,6 +81,8 @@ WarmBlanket.configure do |config|
 end
 ```
 
+Other HTTP verbs are supported (and you can pass in a `body` key if needed), but be careful about side effects from such verbs. And if there's no side effect from a `POST` or `PUT`, do consider if it shouldn't be a `GET` instead ;)
+
 ## Trigger warmup
 
 Add the following to the end of your `config.ru` file:
