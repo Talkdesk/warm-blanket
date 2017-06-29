@@ -8,7 +8,7 @@ RSpec.describe WarmBlanket::WaitForPort do
 
   subject { described_class.new(port: port, **optional_arguments) }
 
-  describe '.call' do
+  describe '#call' do
     let(:call) { subject.call }
 
     context 'when service is available' do

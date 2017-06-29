@@ -10,7 +10,7 @@ RSpec.describe WarmBlanket::Requester do
     described_class.new(base_url: base_url, default_headers: default_headers, endpoints: endpoints)
   }
 
-  describe '.call' do
+  describe '#call' do
     let(:call) { subject.call }
 
     let(:request_url) { "#{base_url}/apps" }
