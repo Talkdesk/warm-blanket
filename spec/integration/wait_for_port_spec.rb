@@ -16,6 +16,14 @@ RSpec.describe WarmBlanket::WaitForPort do
         subject
       end
     end
+
+    context 'when invalid port is specified' do
+      let(:port)  { 'over 9000' }
+
+      it do
+        expect { subject }.to raise_error(described_class::InvalidPort)
+      end
+    end
   end
 
   describe '#call' do
