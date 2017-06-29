@@ -4,6 +4,18 @@
 
 WarmBlanket is a Ruby gem for warming up web services on boot. Its main target are JRuby web services, although it is not JRuby-specific in any way.
 
+* [WarmBlanket](#warmblanket)
+* [How the magic happens](#how-the-magic-happens)
+  * [Why do we need to warm up web services?](#why-do-we-need-to-warm-up-web-services)
+  * [What does WarmBlanket do?](#what-does-warmblanket-do)
+  * [How does WarmBlanket work?](#how-does-warmblanket-work)
+  * [Limitations/caveats](#limitationscaveats)
+* [How can I make use of it?](#how-can-i-make-use-of-it)
+  * [Installation](#installation)
+  * [Configuration settings](#configuration-settings)
+     * [Configuring endpoints to be called](#configuring-endpoints-to-be-called)
+  * [Trigger warmup](#trigger-warmup)
+
 # How the magic happens
 
 ## Why do we need to warm up web services?
