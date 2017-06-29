@@ -1,5 +1,7 @@
 require 'warm_blanket/wait_for_port'
 require 'socket'
+require 'timecop'
+require 'time'
 
 RSpec.describe WarmBlanket::WaitForPort do
   let(:port) { (2**10...2**16).to_a.sample }
@@ -44,35 +46,58 @@ RSpec.describe WarmBlanket::WaitForPort do
     end
 
     context 'when service is not available' do
-      let(:tries_limit) { 3 }
-      let(:optional_arguments) { {tries_limit: tries_limit} }
+      let(:expected_tries) { 10 }
+      let(:time_deadline) { Time.local(2017) + expected_tries }
+      let(:optional_arguments) { {time_deadline: time_deadline} }
 
       before do
         allow(subject).to receive(:sleep)
       end
 
+      after do
+        Timecop.return
+      end
+
       it do
+        Timecop.freeze(time_deadline) # deadline already hit
+
         expect(call).to be false
       end
 
-      it 'retries tries_limit times' do
-        expect(TCPSocket).to receive(:new)
-          .with(default_hostname, port).exactly(tries_limit).times.and_call_original
+      it 'tries at least once' do
+        Timecop.freeze(time_deadline) # deadline already hit
+
+        expect(TCPSocket).to receive(:new) { raise_connection_error }
+
+        call
+      end
+
+      it 'retries until the time_deadline has passed' do
+        Timecop.freeze(Time.local(2017))
+        advancing_time = Time.now
+
+        expect(TCPSocket).to receive(:new).exactly(expected_tries).times do
+          tick_clock_one_second
+          raise_connection_error
+        end
 
         call
       end
 
       it 'sleeps one second between tries' do
+        Timecop.freeze(Time.local(2017))
         should_sleep_now = false
 
         allow(TCPSocket).to receive(:new) do
           should_sleep_now = true
-          raise Errno::ECONNREFUSED
+          raise_connection_error
         end
 
-        expect(subject).to receive(:sleep).with(1).exactly(tries_limit - 1).times do
+        expect(subject).to receive(:sleep).with(1).exactly(expected_tries).times do
           expect(should_sleep_now).to be true
           should_sleep_now = false
+
+          tick_clock_one_second
         end
 
         call
@@ -80,6 +105,8 @@ RSpec.describe WarmBlanket::WaitForPort do
 
       context 'when service becomes available after the n-th try' do
         it do
+          Timecop.freeze(Time.local(2017))
+
           attempts = 0
 
           allow(TCPSocket).to receive(:new) do
@@ -87,7 +114,7 @@ RSpec.describe WarmBlanket::WaitForPort do
             if attempts > 2
               instance_double(TCPSocket, close: nil)
             else
-              raise Errno::ECONNREFUSED
+              raise_connection_error
             end
           end
 
@@ -95,5 +122,13 @@ RSpec.describe WarmBlanket::WaitForPort do
         end
       end
     end
+  end
+
+  def tick_clock_one_second
+    Timecop.freeze(Time.now + 1)
+  end
+
+  def raise_connection_error
+    raise Errno::ECONNREFUSED
   end
 end
