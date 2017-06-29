@@ -8,6 +8,16 @@ RSpec.describe WarmBlanket::WaitForPort do
 
   subject { described_class.new(port: port, **optional_arguments) }
 
+  describe '.new' do
+    context 'when port is specified as a string' do
+      let(:port) { '5000' }
+
+      it 'returns a new instance' do
+        subject
+      end
+    end
+  end
+
   describe '#call' do
     let(:call) { subject.call }
 

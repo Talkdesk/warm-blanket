@@ -16,6 +16,7 @@ module WarmBlanket
     public
 
     def initialize(hostname: 'localhost', port:, tries_limit: 90, logger: WarmBlanket.config.logger)
+      port = Integer(port)
       raise "Invalid port (#{port.inspect})" unless (1...2**16).include?(port)
 
       @hostname = hostname
