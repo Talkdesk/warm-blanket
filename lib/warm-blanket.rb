@@ -5,17 +5,6 @@ require 'dry-configurable'
 require 'logging'
 
 module WarmBlanket
-  def self.trigger_warmup(logger: WarmBlanket.config.logger, orchestrator_factory: Orchestrator)
-    unless [true, 'true', '1'].include?(WarmBlanket.config.enabled)
-      logger.info "WarmBlanket not enabled, ignoring trigger_warmup"
-      return false
-    end
-
-    orchestrator_factory.new.call
-  end
-end
-
-WarmBlanket.instance_eval do
   extend Dry::Configurable
 
   # Endpoints to be called for warmup, see README
@@ -34,4 +23,13 @@ WarmBlanket.instance_eval do
 
   # Time, in seconds, during which to warm up the service
   setting :warmup_time_seconds, Float(ENV['WARMBLANKET_WARMUP_TIME_SECONDS'] || 150), reader: true
+
+  def self.trigger_warmup(logger: WarmBlanket.config.logger, orchestrator_factory: Orchestrator)
+    unless [true, 'true', '1'].include?(WarmBlanket.config.enabled)
+      logger.info "WarmBlanket not enabled, ignoring trigger_warmup"
+      return false
+    end
+
+    orchestrator_factory.new.call
+  end
 end
