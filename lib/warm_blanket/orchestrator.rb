@@ -24,7 +24,7 @@ module WarmBlanket
     attr_reader :hostname
     attr_reader :port
     attr_reader :warmup_threads
-    attr_reader :warmup_time_seconds
+    attr_reader :warmup_deadline
 
     public
 
@@ -47,7 +47,7 @@ module WarmBlanket
       @hostname = hostname
       @port = port
       @warmup_threads = warmup_threads
-      @warmup_time_seconds = warmup_time_seconds
+      @warmup_deadline = Time.now + warmup_time_seconds
     end
 
     def call
@@ -65,6 +65,7 @@ module WarmBlanket
           block.call
         rescue => e
           logger.error "Caught error that caused background thread to die #{e.class}: #{e.message}"
+          logger.debug "#{e.backtrace.join("\n")}"
         end
       end
     end
@@ -76,7 +77,7 @@ module WarmBlanket
     end
 
     def wait_for_port_to_open
-      wait_for_port_factory.new(port: port).call
+      wait_for_port_factory.new(port: port, time_deadline: warmup_deadline).call
     end
 
     def spawn_warmup_threads
@@ -93,10 +94,13 @@ module WarmBlanket
 
     def perform_warmup_requests
       success = false
-      logger.debug "Starting warmup requests"
 
-      warmup_start = Time.now
-      warmup_deadline = warmup_start + warmup_time_seconds
+      if Time.now >= warmup_deadline
+        logger.warn "Warmup deadline already passed, will skip warmup"
+        return
+      end
+
+      logger.debug "Starting warmup requests (remaining deadline: #{[warmup_deadline - Time.now, 0].max})"
 
       requester = requester_factory.new(
         base_url: "http://#{hostname}:#{port}",
