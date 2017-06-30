@@ -53,16 +53,16 @@ To make use of WarmBlanket, you'll need to follow the next sections, which will 
 To install using Bundler, add the following to your `Gemfile`:
 
 ```ruby
-gem 'warm-blanket', '~> 0.1',
+gem 'warm-blanket', '~> 0.2',
   git: 'https://github.com/Talkdesk/warm-blanket.git'
 ```
 
 To install a particular version, add the `tag` option:
 
 ```ruby
-gem 'warm-blanket', '~> 0.1',
+gem 'warm-blanket', '~> 0.2',
   git: 'https://github.com/Talkdesk/warm-blanket.git',
-  tag: 'v0.1.0'
+  tag: 'v0.2.0'
 ```
 
 ## Configuration settings
