@@ -49,7 +49,7 @@ module WarmBlanket
       if response.status == 200
         logger.debug "Request successful"
       else
-        logger.warn "Request to #{endpoint.fetch(:get)} failed with code #{response.status}"
+        logger.warn "Request to #{endpoint.fetch(http_verb)} failed with code #{response.status}"
       end
 
       nil
