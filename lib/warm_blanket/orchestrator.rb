@@ -65,6 +65,7 @@ module WarmBlanket
           block.call
         rescue => e
           logger.error "Caught error that caused background thread to die #{e.class}: #{e.message}"
+          logger.debug "#{e.backtrace.join("\n")}"
         end
       end
     end
