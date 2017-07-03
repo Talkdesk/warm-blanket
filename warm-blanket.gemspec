@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'faraday', '~> 0.9'
   spec.add_dependency 'dry-configurable', '~> 0.7'
-  spec.add_dependency 'logging', '~> 2.1.0'
+  spec.add_dependency 'logging', '~> 2.1'
 end
