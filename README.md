@@ -11,10 +11,10 @@ WarmBlanket is a Ruby gem for warming up web services on boot. Its main target a
   * [How does WarmBlanket work?](#how-does-warmblanket-work)
   * [Limitations/caveats](#limitationscaveats)
 * [How can I make use of it?](#how-can-i-make-use-of-it)
-  * [Installation](#installation)
-  * [Configuration settings](#configuration-settings)
+  * [1. Installation](#1-installation)
+  * [2. Configuration settings](#2-configuration-settings)
      * [Configuring endpoints to be called](#configuring-endpoints-to-be-called)
-  * [Trigger warmup](#trigger-warmup)
+  * [3. Trigger warmup](#3-trigger-warmup)
 
 # How the magic happens
 
@@ -48,7 +48,7 @@ We strongly recommend that any services using WarmBlanket, if deployed on Heroku
 
 To make use of WarmBlanket, you'll need to follow the next sections, which will guide you through installing, configuring and enabling the gem.
 
-## Installation
+## 1. Installation
 
 To install using Bundler, add the following to your `Gemfile`:
 
@@ -65,7 +65,7 @@ gem 'warm-blanket', '~> 0.2',
   tag: 'v0.2.0'
 ```
 
-## Configuration settings
+## 2. Configuration settings
 
 This gem can be configured via the following environment variables:
 
@@ -119,7 +119,7 @@ WarmBlanket.configure do |config|
 end
 ```
 
-## Trigger warmup
+## 3. Trigger warmup
 
 Add the following to the end of your `config.ru` file:
 
