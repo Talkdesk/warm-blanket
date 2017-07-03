@@ -83,7 +83,7 @@ require 'warm-blanket'
 
 WarmBlanket.configure do |config|
   common_headers = {
-    'X-Api-Key': ENV['API_KEY'].split(',').first,
+    'X-Api-Key': ENV.fetch('API_KEY').split(',').first,
   }
 
   config.endpoints = [
@@ -94,6 +94,30 @@ end
 ```
 
 Other HTTP verbs are supported (and you can pass in a `body` key if needed), but be careful about side effects from such verbs. And if there's no side effect from a `POST` or `PUT`, do consider if it shouldn't be a `GET` instead ;)
+
+```ruby
+# Example POST request with body
+#
+# Notice that you need to both:
+# * set the Content-Type manually (if needed)
+# * JSON-encode the body  (if needed)
+
+WarmBlanket.configure do |config|
+  common_headers = {
+    'X-Api-Key': ENV.fetch('API_KEY').split(',').first,
+    'Content-Type': 'application/json',
+  }
+
+  post_body = MultiJson.dump(
+    account_id: 'dummy_account',
+    user_id: 'dummy_user_id',
+  )
+
+  config.endpoints = [
+    {post: '/some_endoint', headers: common_headers, body: post_body},
+  ]
+end
+```
 
 ## Trigger warmup
 
