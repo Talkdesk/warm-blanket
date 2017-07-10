@@ -11,10 +11,10 @@ WarmBlanket is a Ruby gem for warming up web services on boot. Its main target a
   * [How does WarmBlanket work?](#how-does-warmblanket-work)
   * [Limitations/caveats](#limitationscaveats)
 * [How can I make use of it?](#how-can-i-make-use-of-it)
-  * [Installation](#installation)
-  * [Configuration settings](#configuration-settings)
+  * [1. Installation](#1-installation)
+  * [2. Configuration settings](#2-configuration-settings)
      * [Configuring endpoints to be called](#configuring-endpoints-to-be-called)
-  * [Trigger warmup](#trigger-warmup)
+  * [3. Trigger warmup](#3-trigger-warmup)
 
 # How the magic happens
 
@@ -48,7 +48,7 @@ We strongly recommend that any services using WarmBlanket, if deployed on Heroku
 
 To make use of WarmBlanket, you'll need to follow the next sections, which will guide you through installing, configuring and enabling the gem.
 
-## Installation
+## 1. Installation
 
 To install using Bundler, add the following to your `Gemfile`:
 
@@ -62,10 +62,10 @@ To install a particular version, add the `tag` option:
 ```ruby
 gem 'warm-blanket', '~> 0.2',
   git: 'https://github.com/Talkdesk/warm-blanket.git',
-  tag: 'v0.2.0'
+  tag: 'v0.2.1'
 ```
 
-## Configuration settings
+## 2. Configuration settings
 
 This gem can be configured via the following environment variables:
 
@@ -83,7 +83,7 @@ require 'warm-blanket'
 
 WarmBlanket.configure do |config|
   common_headers = {
-    'X-Api-Key': ENV['API_KEY'].split(',').first,
+    'X-Api-Key': ENV.fetch('API_KEYS').split(',').first,
   }
 
   config.endpoints = [
@@ -95,7 +95,31 @@ end
 
 Other HTTP verbs are supported (and you can pass in a `body` key if needed), but be careful about side effects from such verbs. And if there's no side effect from a `POST` or `PUT`, do consider if it shouldn't be a `GET` instead ;)
 
-## Trigger warmup
+```ruby
+# Example POST request with body
+#
+# Notice that you need to both:
+# * set the Content-Type manually (if needed)
+# * JSON-encode the body  (if needed)
+
+WarmBlanket.configure do |config|
+  common_headers = {
+    'X-Api-Key': ENV.fetch('API_KEY').split(',').first,
+    'Content-Type': 'application/json',
+  }
+
+  post_body = MultiJson.dump(
+    account_id: 'dummy_account',
+    user_id: 'dummy_user_id',
+  )
+
+  config.endpoints = [
+    {post: '/some_endoint', headers: common_headers, body: post_body},
+  ]
+end
+```
+
+## 3. Trigger warmup
 
 Add the following to the end of your `config.ru` file:
 
