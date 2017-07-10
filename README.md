@@ -83,7 +83,7 @@ require 'warm-blanket'
 
 WarmBlanket.configure do |config|
   common_headers = {
-    'X-Api-Key': ENV.fetch('API_KEY').split(',').first,
+    'X-Api-Key': ENV.fetch('API_KEYS').split(',').first,
   }
 
   config.endpoints = [
