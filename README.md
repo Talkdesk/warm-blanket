@@ -62,7 +62,7 @@ To install a particular version, add the `tag` option:
 ```ruby
 gem 'warm-blanket', '~> 0.2',
   git: 'https://github.com/Talkdesk/warm-blanket.git',
-  tag: 'v0.2.0'
+  tag: 'v0.2.1'
 ```
 
 ## 2. Configuration settings
