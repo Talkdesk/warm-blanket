@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'warm-blanket'
+
+require 'pry'
+Pry.start
