@@ -28,9 +28,7 @@ module WarmBlanket
     DEFAULT_HEADERS = {
       'X-Forwarded-Proto': 'https',
       'X-Request-Id': 'WarmBlanket',
-      'X-Platform-Tid': 'WarmBlanket',
       'X-Client-Id': 'WarmBlanket',
-      'X-Account': 'WarmBlanket',
     }.freeze
 
     private
