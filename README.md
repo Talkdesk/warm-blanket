@@ -1,7 +1,5 @@
 # WarmBlanket
 
-**WarmBlanket is still a prototype. YMMV**
-
 WarmBlanket is a Ruby gem for warming up web services on boot. Its main target are JRuby web services, although it is not JRuby-specific in any way.
 
 * [WarmBlanket](#warmblanket)
@@ -15,6 +13,10 @@ WarmBlanket is a Ruby gem for warming up web services on boot. Its main target a
   * [2. Configuration settings](#2-configuration-settings)
      * [Configuring endpoints to be called](#configuring-endpoints-to-be-called)
   * [3. Trigger warmup](#3-trigger-warmup)
+* [Development](#development)
+* [Contributing](#contributing)
+
+<sub><sup>ToC created with [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)</sup></sub>
 
 # How the magic happens
 
@@ -53,25 +55,18 @@ To make use of WarmBlanket, you'll need to follow the next sections, which will 
 To install using Bundler, add the following to your `Gemfile`:
 
 ```ruby
-gem 'warm-blanket', '~> 0.2',
-  git: 'https://github.com/Talkdesk/warm-blanket.git'
+gem 'warm-blanket', '~> 1.0'
 ```
 
-To install a particular version, add the `tag` option:
-
-```ruby
-gem 'warm-blanket', '~> 0.2',
-  git: 'https://github.com/Talkdesk/warm-blanket.git',
-  tag: 'v0.2.1'
-```
+WarmBlanket uses [semantic versioning](http://semver.org/).
 
 ## 2. Configuration settings
 
 This gem can be configured via the following environment variables:
 
 * `PORT`: Local webserver port (automatically set on Heroku)
-* `WARMBLANKET_ENABLED`: Enable warmup (defaults to `false`; `true` or `1` enables)
-* `WARMBLANKET_WARMUP_THREADS`: Number of warmup threads to use (defaults to `2`)
+* `WARMBLANKET_ENABLED`: Enable warm blanket (defaults to `false`; `true` or `1` enables)
+* `WARMBLANKET_WARMUP_THREADS`: Number of warm up threads to use (defaults to `2`)
 * `WARMBLANKET_WARMUP_TIME_SECONDS`: Time, in seconds, during which to warm up the service (defaults to `150`)
 
 ### Configuring endpoints to be called
@@ -87,7 +82,7 @@ WarmBlanket.configure do |config|
   }
 
   config.endpoints = [
-    {get: '/apps', headers: common_headers},
+    {get: '/foo', headers: common_headers},
     {get: '/', headers: common_headers},
   ]
 end
@@ -126,3 +121,19 @@ Add the following to the end of your `config.ru` file:
 ```ruby
 WarmBlanket.trigger_warmup
 ```
+
+# Development
+
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+# Contributors
+
+Open-sourced with :heart: by Talkdesk!
+
+Maintained by [Ivo Anjo](https://github.com/ivoanjo/) and the [Talkdesk Engineering](http://github.com/Talkdesk/) team.
+
+# Contributing
+
+Bug reports and pull requests are welcome on GitHub at <https://github.com/Talkdesk/warm-blanket>.
