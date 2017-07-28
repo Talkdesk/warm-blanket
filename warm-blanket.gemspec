@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = WarmBlanket::VERSION
   spec.authors       = ['Talkdesk Engineering']
   spec.email         = ['tech@talkdesk.com']
+  spec.license       = 'LGPL-3.0+'
 
   spec.summary       = 'Ruby gem for warming up web services on boot'
   spec.description   = 'Ruby gem for warming up web services on boot'
