@@ -46,6 +46,8 @@ As it simulates requests, the JVM is warmed up and thus when real requests come 
 
 We strongly recommend that any services using WarmBlanket, if deployed on Heroku, use [Preboot](https://devcenter.heroku.com/articles/preboot). Preboot allows a service instance to be warmed up for 3 minutes before Heroku starts sending live traffic its way, which is preferable to doing it live.
 
+On kubernetes, you can make use of [readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) to delay service startup while warm-blanket is working.
+
 # How can I make use of it?
 
 To make use of WarmBlanket, you'll need to follow the next sections, which will guide you through installing, configuring and enabling the gem.
