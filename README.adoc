@@ -1,6 +1,8 @@
 = WarmBlanket
 :toc:
 :toc-placement: macro
+:toclevels: 3
+:toc-title:
 
 WarmBlanket is a Ruby gem for warming up web services on boot. Its main
 target are JRuby-powered web services, although it is not JRuby-specific in any
