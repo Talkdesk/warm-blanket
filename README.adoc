@@ -5,8 +5,8 @@
 :toc-title:
 
 WarmBlanket is a Ruby gem for warming up web services on boot. Its main
-target are JRuby-powered web services, although it is not JRuby-specific in any
-way.
+target are JRuby-powered web services or even TruffleRuby based services,
+although it is not specific to those runtimes in any way.
 
 toc::[]
 
