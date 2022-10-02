@@ -25,6 +25,14 @@ require 'logging'
 module WarmBlanket
   extend Dry::Configurable
 
+  # Compatibility with Ruby 2.3 / JRuby 9.1: Modern versions of dry-configurable emit deprecation warnings for the way
+  # we're passing in defaults, but older versions of the gem don't work on the older Ruby/JRuby versions.
+  # See https://github.com/dry-rb/dry-configurable/blob/main/CHANGELOG.md#0130-2021-09-12 .
+  # This can be dropped when we drop support for Ruby 2.3/JRuby 9.1
+  if Dry::Configurable.respond_to?(:warn_on_setting_positional_default)
+    Dry::Configurable.warn_on_setting_positional_default(false)
+  end
+
   # Endpoints to be called for warmup, see README
   setting :endpoints, [], reader: true
 
