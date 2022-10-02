@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0")
-      .reject { |f| f.match(%r{\A(?:test|spec|features|[.]github)/}) }
+      .reject { |f| f.match(%r{\A(?:test|spec|features|[.]github|examples)/}) }
       .reject { |f|
         ["gems.rb", ".ruby-version", ".gitignore", ".rspec",
           "Rakefile", "bin/pry", "bin/rspec", "bin/console"].include?(f)
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug' unless RUBY_PLATFORM == 'java'
   spec.add_development_dependency 'pry-debugger-jruby' if RUBY_PLATFORM == 'java'
+  spec.add_development_dependency 'webrick', '~> 1.7.0'
 
   spec.add_dependency 'faraday', '~> 0.9'
   spec.add_dependency 'dry-configurable', '~> 0.7'
