@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-debugger-jruby' if RUBY_PLATFORM == 'java'
   spec.add_development_dependency 'webrick', '~> 1.7.0'
 
-  spec.add_dependency 'faraday', '~> 1.10'
-  spec.add_dependency 'dry-configurable', '~> 0.7'
-  spec.add_dependency 'logging', '~> 2.1'
+  spec.add_dependency 'faraday', '~> 1.0' # Kept at 1.0 because it still supports Ruby 2.3 (JRuby 9.1)
+  spec.add_dependency 'dry-configurable', '~> 0.8' # Kept at 0.8 because it still supports Ruby 2.3 (JRuby 9.1)
+  spec.add_dependency 'logging', '~> 2.3'
 end
