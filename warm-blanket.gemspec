@@ -14,7 +14,14 @@ Gem::Specification.new do |spec|
   spec.description   = 'Ruby gem for warming up web services on boot'
   spec.homepage      = 'https://github.com/Talkdesk/warm-blanket'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0")
+      .reject { |f| f.match(%r{\A(?:test|spec|features|[.]github)/}) }
+      .reject { |f|
+        ["gems.rb", ".ruby-version", ".gitignore", ".rspec",
+          "Rakefile", "bin/pry", "bin/rspec", "bin/console"].include?(f)
+      }
+  end
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 2.3'
