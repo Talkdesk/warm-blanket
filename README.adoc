@@ -56,6 +56,12 @@ On kubernetes, you can make use of
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[readiness
 probes] to delay service startup while warm-blanket is working.
 
+=== Important for TruffleRuby as well!
+
+TruffleRuby can be run either on a standalone mode, or with a JVM.
+In either configuration, like JRuby, it needs to warm up until it
+gets to peak performance, so WarmBlanket is great there too!
+
 == How can I make use of it?
 
 To make use of WarmBlanket, you'll need to follow the next sections,
