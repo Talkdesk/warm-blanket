@@ -19,5 +19,5 @@
 # frozen_string_literal: true
 
 module WarmBlanket
-  VERSION = '1.0.0'
+  VERSION = '1.1.0'
 end

@@ -92,7 +92,6 @@ RSpec.describe WarmBlanket::WaitForPort do
 
       it 'retries until the time_deadline has passed' do
         Timecop.freeze(Time.local(2017))
-        advancing_time = Time.now
 
         expect(TCPSocket).to receive(:new).exactly(expected_tries).times do
           tick_clock_one_second
